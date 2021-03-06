@@ -18,33 +18,6 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - name: Cache Backend Docker layers
-        uses: actions/cache@v2
-        with:
-          path: |
-            /tmp/.buildx-cache-backend
-            /tmp/.buildx-cache-tipping
-          key: ${{ runner.os }}-buildx-${{ github.ref }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: Build backend Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./backend
-          builder: ${{ steps.buildx.outputs.name }}
-          tags: cfranklin11/tipresias_backend:latest
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache-backend
-          cache-to: type=local,dest=/tmp/.buildx-cache-backend
-      - name: Build tipping Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./tipping
-          builder: ${{ steps.buildx.outputs.name }}
-          tags: cfranklin11/tipresias_tipping:latest
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache-tipping
-          cache-to: type=local,dest=/tmp/.buildx-cache-tipping
       - name: Build frontend Docker image
         uses: docker/build-push-action@v2
         with:
@@ -59,39 +32,14 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           tags: cfranklin11/tipresias_browser_test:latest
           load: true
-      - name: Set up cloud credentials
-        env:
-          ENCRYPTION_PASSWORD: ${{ secrets.ENCRYPTION_PASSWORD }}
-        run: |
-          gpg --quiet --batch --yes --decrypt --passphrase="$ENCRYPTION_PASSWORD" --output secrets.tar secrets.tar.gpg
-          tar xvf secrets.tar
-          mkdir ${HOME}/.ssh && mv deploy_rsa ${HOME}/.ssh/
-          mkdir ${HOME}/.aws && mv credentials ${HOME}/.aws/
-      - name: Set up Google Cloud SDK
-        # We use gcloud/gsutil to upload screenshot artifacts on browser test failures,
-        # so we have to add credentials before running system tests
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.PROJECT_ID }}
-          service_account_key: ${{ secrets.GC_SA_KEY }}
-          export_default_credentials: true
       - name: Lint
         if: ${{ always() }}
         run: |
-          docker run --rm cfranklin11/tipresias_backend:latest pylint --disable=R server project scripts
-          docker run --rm cfranklin11/tipresias_tipping:latest pylint --disable=R src handler.py
           docker run --rm cfranklin11/tipresias_frontend:latest yarn run eslint src
       - name: Check types
         if: ${{ always() }}
         run: |
-          docker run --rm cfranklin11/tipresias_backend:latest mypy server project scripts
-          docker run --rm cfranklin11/tipresias_tipping:latest mypy src handler.py
           docker run --rm cfranklin11/tipresias_frontend:latest yarn run flow
-      - name: Check documentation
-        if: ${{ always() }}
-        run: |
-          docker run --rm cfranklin11/tipresias_backend:latest pydocstyle server project scripts
-          docker run --rm cfranklin11/tipresias_tipping:latest pydocstyle src handler.py
       - name: Run unit tests
         if: ${{ always() }}
         run: |
@@ -108,9 +56,6 @@ jobs:
           ./scripts/update_frontend_gql_types.sh docker-compose.ci.yml
           docker-compose -f docker-compose.ci.yml stop
 
-          ./scripts/integration_tests.sh docker-compose.ci.yml
-          docker-compose -f docker-compose.ci.yml stop
-
           ./scripts/browser_tests.sh docker-compose.ci.yml
           docker-compose -f docker-compose.ci.yml stop
       - name: Upload test coverage report
@@ -123,11 +68,8 @@ jobs:
         #
         # Need to move coverage files to frontend, because filenames are relative to frontend root
         run: |
-          cd ./backend && ../cc-test-reporter format-coverage -t coverage.py -o ../coverage/codeclimate.backend.json && cd ..
-          cd ./tipping && ../cc-test-reporter format-coverage -t coverage.py -o ../coverage/codeclimate.tipping.json && cd ..
           sudo chmod 755 ./browser_test && sudo mv ./browser_test/coverage ./frontend
-          cd ./frontend && ../cc-test-reporter format-coverage -t lcov -o ../coverage/codeclimate.frontend.json && cd ..
-          ./cc-test-reporter sum-coverage ./coverage/codeclimate.*.json -p 3
+          cd ./frontend && ../cc-test-reporter format-coverage -t lcov
           ./cc-test-reporter upload-coverage
       - name: Login to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -138,25 +80,5 @@ jobs:
       - name: Push updated images
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          docker push cfranklin11/tipresias_backend:latest
-          docker push cfranklin11/tipresias_tipping:latest
           docker push cfranklin11/tipresias_frontend:latest
           docker push cfranklin11/tipresias_browser_test:latest
-      - name: Deploy
-        if: ${{ github.ref == 'refs/heads/main' }}
-        env:
-          CI: true
-          DATA_SCIENCE_SERVICE: ${{ secrets.DATA_SCIENCE_SERVICE }}
-          DATA_SCIENCE_SERVICE_TOKEN: ${{ secrets.DATA_SCIENCE_SERVICE_TOKEN }}
-          DIGITAL_OCEAN_USER: ${{ secrets.DIGITAL_OCEAN_USER }}
-          FOOTY_TIPS_USERNAME: ${{ secrets.FOOTY_TIPS_USERNAME }}
-          FOOTY_TIPS_PASSWORD: ${{ secrets.FOOTY_TIPS_PASSWORD }}
-          MONASH_USERNAME: ${{ secrets.MONASH_USERNAME }}
-          MONASH_PASSWORD: ${{ secrets.MONASH_PASSWORD }}
-          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
-          ROLLBAR_TOKEN: ${{ secrets.ROLLBAR_TOKEN }}
-          SPLASH_SERVICE: ${{ secrets.SPLASH_SERVICE }}
-          TIPPING_SERVICE_TOKEN: ${{ secrets.TIPPING_SERVICE_TOKEN }}
-          TIPRESIAS_APP: ${{ secrets.TIPRESIAS_APP }}
-          TIPRESIAS_APP_TOKEN: ${{ secrets.TIPRESIAS_APP_TOKEN }}
-        run: ./scripts/deploy.sh
