@@ -1,0 +1,16 @@
+[ignore]
+.*/test/.*
+.*/webpack/.*
+.*/server/.*
+.*/webpack.config.js
+.*/dist/.*
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+
+[strict]
