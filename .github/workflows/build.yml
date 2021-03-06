@@ -6,7 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CC_TEST_REPORTER_ID: 116e680b22e379b7a9da04e84696bc363d3e145776a92884de4b6b6b2a253fe5
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
     steps:
       - uses: actions/checkout@v2
@@ -63,19 +62,6 @@ jobs:
         with:
           name: cypress-screenshots
           path: ./browser_test/cypress/screenshots/
-      - name: Upload test coverage report
-        # Only way I could get it to work was running format-coverage from each app's root.
-        # Otherwise, it can't find files listed in coverage reports, because it uses $PWD,
-        # and the --prefix option is to turn absolute paths into relative paths,
-        # not to find files in subdirectories.
-        #
-        # Also, trying to run the code coverage tool inside docker was more trouble than it's worth.
-        #
-        # Need to move coverage files to frontend, because filenames are relative to frontend root
-        run: |
-          sudo chmod 755 ./browser_test && sudo mv ./browser_test/coverage ./frontend
-          cd ./frontend && ../cc-test-reporter format-coverage -t lcov
-          ./cc-test-reporter upload-coverage
       - name: Login to Docker Hub
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/login-action@v1
