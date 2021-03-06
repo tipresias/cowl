@@ -58,6 +58,11 @@ jobs:
 
           ./scripts/browser_tests.sh docker-compose.ci.yml
           docker-compose -f docker-compose.ci.yml stop
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: cypress-screenshots
+          path: ./browser_test/cypress/screenshots/
       - name: Upload test coverage report
         # Only way I could get it to work was running format-coverage from each app's root.
         # Otherwise, it can't find files listed in coverage reports, because it uses $PWD,
