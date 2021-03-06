@@ -1,0 +1,10 @@
+version: "2"
+exclude_patterns:
+  - "**/flow-typed/"
+  - "**/test/"
+  - "**/tests/"
+  - "**/__tests__/"
+  - "**/migrations/"
+checks:
+  file-lines:
+    enabled: false
