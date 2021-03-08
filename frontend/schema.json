@@ -135,13 +135,9 @@
             "description": "Performance metrics for Tipresias models for the current season through the last-played round.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "RoundMetricsType",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "RoundMetricsType",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
