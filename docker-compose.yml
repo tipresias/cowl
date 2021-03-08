@@ -1,18 +1,5 @@
 version: "3.2"
 services:
-  backend:
-    image: cfranklin11/tipresias_backend:latest
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    env_file: .env
-    environment:
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.settings.development}
-      - DATABASE_HOST=db
-      - DATABASE_NAME=${DATABASE_NAME:-tipresias}
-      - GRAPHIQL=True
-    command: python3 manage.py runserver 0.0.0.0:8000
   frontend:
     build: ./frontend
     volumes:
@@ -24,8 +11,6 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
     stdin_open: true
     tty: true
-    depends_on:
-      - backend
     command: yarn start
   browser_test:
     build: ./browser_test
@@ -37,12 +22,6 @@ services:
       # Need to use 'host' network mode to avoid cross-host errors
       # from Webpack server
     network_mode: "host"
-  db:
-    image: postgres:11.6
-    environment:
-      - POSTGRES_DB=$DATABASE_NAME
-    ports:
-      - "5432:5432"
 volumes:
   tipresias_node_modules:
     external: true
