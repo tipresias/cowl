@@ -237,23 +237,23 @@ const Dashboard = ({ years, models, metrics }: DashboardProps) => {
               const {
                 season,
                 roundNumber,
-                cumulativeBits,
-                cumulativeMeanAbsoluteError,
-                cumulativeCorrectCount,
-                cumulativeMarginDifference,
-              } = data.fetchLatestRoundMetrics;
+                cumulativeBits = 0,
+                cumulativeMeanAbsoluteError = 0,
+                cumulativeCorrectCount = 0,
+                cumulativeMarginDifference = 0,
+              } = data.fetchLatestRoundMetrics || {};
 
               return (
                 <Fragment>
                   <WidgetHeading>
                     Performance metrics for Tipresias
                   </WidgetHeading>
-                  <WidgetSubHeading>{`Round ${roundNumber},  Season ${season} `}</WidgetSubHeading>
+                  {season && roundNumber && <WidgetSubHeading>{`Round ${roundNumber},  Season ${season} `}</WidgetSubHeading>}
                   <DefinitionList items={[
                     {
                       id: 1,
                       key: 'Cumulative Correct Count',
-                      value: cumulativeCorrectCount ? Math.round(cumulativeCorrectCount * 100) / 100 : '-',
+                      value: Math.round(cumulativeCorrectCount * 100) / 100,
                     },
                     {
                       id: 2,

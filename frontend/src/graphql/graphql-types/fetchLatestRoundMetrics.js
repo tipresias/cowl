@@ -33,7 +33,7 @@ export type fetchLatestRoundMetrics = {
   /**
    * Performance metrics for Tipresias models for the current season through the last-played round.
    */
-  fetchLatestRoundMetrics: fetchLatestRoundMetrics_fetchLatestRoundMetrics
+  fetchLatestRoundMetrics: ?fetchLatestRoundMetrics_fetchLatestRoundMetrics
 };/* @flow */
 /* eslint-disable */
 // @generated
