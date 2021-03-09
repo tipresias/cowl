@@ -56,7 +56,6 @@
     "nock": "^13.0.10",
     "react-app-rewired": "^2.1.8"
   },
-  "proxy": "http://host.docker.internal:8000",
   "browserslist": [
     ">0.2%",
     "not dead",
