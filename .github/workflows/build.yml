@@ -52,10 +52,9 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yml up --no-start
 
-          ./scripts/update_frontend_gql_types.sh docker-compose.ci.yml
-          docker-compose -f docker-compose.ci.yml stop
-
+          ./scripts/update_frontend_gql_types.sh
           ./scripts/browser_tests.sh docker-compose.ci.yml
+
           docker-compose -f docker-compose.ci.yml stop
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}

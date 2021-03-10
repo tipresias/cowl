@@ -3,22 +3,35 @@
 set -euo pipefail
 
 CI=${CI:-"false"}
-DOCKER_COMPOSE_FILE="${1:-docker-compose.yml}"
+DOCKER_RUN="docker-compose run --rm frontend"
 
 echo "Checking GraphQL type compatibility..."
 
-docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
+if [[ $CI = "true" ]]
+then
+  DOCKER_RUN="
+    docker run \
+      --rm \
+      -p "3000:3000" \
+      -v $PWD/frontend:/app \
+      -v /app/node_modules \
+      -e CI=$CI \
+      cfranklin11/tipresias_frontend:latest
+  "
+fi
 
-./scripts/wait-for-it.sh localhost:3000 -t 30 -- \
-  docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm frontend \
-    yarn run apollo client:download-schema --config=src/apollo.config.js
+docker-compose -f docker-compose.ci.yml up -d
 
-docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm frontend \
-  yarn run apollo client:codegen graphql-types \
-    --target=flow \
-    --includes=src/graphql/index.js \
-    --tagName=gql \
-    --localSchemaFile=schema.json
+./scripts/wait-for-it.sh localhost:8000 -- \
+  $DOCKER_RUN \
+  yarn run apollo client:download-schema --config=src/apollo.config.js
+
+$DOCKER_RUN \
+yarn run apollo client:codegen graphql-types \
+  --target=flow \
+  --includes=src/graphql/index.js \
+  --tagName=gql \
+  --localSchemaFile=schema.json
 
 if [[ $CI = "true" ]]
 then

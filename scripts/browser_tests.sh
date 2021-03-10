@@ -1,13 +1,11 @@
 #!/bin/bash
 
 #### SETUP ####
-DOCKER_COMPOSE_FILE="${1:-docker-compose.yml}"
-
+DOCKER_COMPOSE_FILE=docker-compose.ci.yml
 DEFAULT_DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-DEFAULT_NODE_ENV=${NODE_ENV}
+FRONTEND_CONTAINER=frontend
 
 export DJANGO_SETTINGS_MODULE=project.settings.test
-export NODE_ENV=test
 
 docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
 
@@ -24,11 +22,8 @@ if [ ${EXIT_CODE} != 0 ]
 then
   # Need to stop before exiting to reset to non-test env vars
   docker-compose -f ${DOCKER_COMPOSE_FILE} stop
-
   export DJANGO_SETTINGS_MODULE=${DEFAULT_DJANGO_SETTINGS_MODULE}
-  export NODE_ENV=${DEFAULT_NODE_ENV}
-
-  docker-compose up -d
+  docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
 
   exit ${EXIT_CODE}
 fi
@@ -44,8 +39,17 @@ export DATABASE_NAME="test_${DEFAULT_DATABASE_NAME}"
 # Restarting backend for the new env var to be used
 docker-compose -f ${DOCKER_COMPOSE_FILE} stop backend
 docker-compose -f ${DOCKER_COMPOSE_FILE} up -d backend
+docker run \
+  --rm \
+  -d \
+  -p "3000:3000" \
+  -v $PWD/frontend:/app \
+  -v /app/node_modules \
+  -e CI=$CI \
+  --name $FRONTEND_CONTAINER \
+  cfranklin11/tipresias_frontend:latest
 
-./scripts/wait-for-it.sh localhost:8000 -t 30 -- \
+./scripts/wait-for-it.sh localhost:3000 -- \
   docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm \
     browser_test npx cypress run
 
@@ -53,17 +57,15 @@ EXIT_CODE=$?
 
 #### CLEANUP ####
 # Need to stop before exiting to reset to non-test env vars
-docker-compose exec db psql \
+docker-compose -f ${DOCKER_COMPOSE_FILE} exec db psql \
   -U postgres \
   -d ${DATABASE_NAME} \
   --command "DROP DATABASE ${DATABASE_NAME}"
 
+docker stop $FRONTEND_CONTAINER
 docker-compose -f ${DOCKER_COMPOSE_FILE} stop
 
 export DJANGO_SETTINGS_MODULE=${DEFAULT_DJANGO_SETTINGS_MODULE}
-export NODE_ENV=${DEFAULT_NODE_ENV}
 export DATABASE_NAME=${DEFAULT_DATABASE_NAME}
-
-docker-compose up -d
 
 exit ${EXIT_CODE}
