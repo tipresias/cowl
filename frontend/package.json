@@ -30,7 +30,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "recharts": "^2.0.8",
-    "rollbar": "^2.21.0",
+    "rollbar": "^2.21.1",
     "styled-components": "^4.4.1"
   },
   "devDependencies": {
