@@ -49,7 +49,7 @@ jobs:
           ./scripts/update_frontend_gql_types.sh
       - name: Save updated GQL schema
         uses: actions/upload-artifact@v2
-        if: ${{ steps.gql_integration_tests.outcome == 'failure' }}
+        if: ${{ always() && steps.gql_integration_tests.outcome == 'failure' }}
         with:
           name: gql-schema
           path: ./schema.json
@@ -61,7 +61,7 @@ jobs:
           docker-compose -f docker-compose.ci.yml stop
       - name: Save Cypress screenshots
         uses: actions/upload-artifact@v2
-        if: ${{ steps.browser_tests.outcome == 'failure' }}
+        if: ${{ always() && steps.browser_tests.outcome == 'failure' }}
         with:
           name: cypress-screenshots
           path: ./cypress/screenshots/
