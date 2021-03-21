@@ -6,9 +6,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
-const domainPort = process.env.NODE_ENV === 'production' ? 'tipresias.net' : 'localhost:8000';
+const defineHost = () => {
+  if (process.env.NODE_ENV === 'production') return 'tipresias.net';
+
+  if (process.env.CI) return 'backend:8000';
+
+  return 'localhost:8000';
+};
+
+const host = defineHost();
 const client = new ApolloClient({
-  uri: `http://${domainPort}/graphql`,
+  uri: `http://${host}/graphql`,
   cache: new InMemoryCache({
     addTypename: false,
   }),
