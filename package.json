@@ -43,6 +43,8 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^6.0.0",
     "customize-cra": "^1.0.0",
+    "@cypress/code-coverage": "3.9.2",
+    "cypress": "6.6.0",
     "enzyme-to-json": "^3.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -52,8 +54,10 @@
     "eslint-plugin-react": "^7.22.0",
     "flow-bin": "^0.133.0",
     "flow-typed": "^3.3.1",
+    "istanbul-lib-coverage": "3.0.0",
     "jest-styled-components": "^7.0.3",
     "nock": "^13.0.11",
+    "nyc": "15.1.0",
     "react-app-rewired": "^2.1.8"
   },
   "browserslist": [

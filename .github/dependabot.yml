@@ -1,23 +1,17 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/browser_test"
+    directory: "./"
     schedule:
       interval: weekly
       day: sunday
-    open-pull-requests-limit: 25
-  - package-ecosystem: docker
-    directory: "/frontend"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 25
-  - package-ecosystem: npm
-    directory: "/frontend"
-    schedule:
-      interval: weekly
-      day: friday
     open-pull-requests-limit: 25
     ignore:
       # Because it's breaking builds now, and it's annoying to fix,
       # and I want to move to typescript eventually
       - dependency-name: "flow-bin"
+  - package-ecosystem: docker
+    directory: "./"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 25
