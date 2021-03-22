@@ -18,6 +18,10 @@ export type fetchSeasonPerformanceChartParameters_fetchSeasonPerformanceChartPar
    * Whether the model's predictions are used in any competitions.
    */
   usedInCompetitions: boolean,
+  /**
+   * Seasons for which the model has predicted match results.
+   */
+  predictionSeasons: Array<number>,
 };
 
 export type fetchSeasonPerformanceChartParameters_fetchSeasonPerformanceChartParameters = {
