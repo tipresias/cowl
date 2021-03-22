@@ -90,6 +90,7 @@ export const FETCH_CHART_PARAMETERS_QUERY = gql`
         name
         isPrincipal
         usedInCompetitions
+        predictionSeasons
       }
     }
   }
