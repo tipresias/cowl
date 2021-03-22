@@ -8,7 +8,8 @@
   "extends": [
     "eslint:recommended",
     "airbnb",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "plugin:cypress/recommended"
   ],
   "parser": "babel-eslint",
   "plugins": [
