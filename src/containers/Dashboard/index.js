@@ -31,7 +31,8 @@ import { log } from '../../helpers';
 export type ModelType = {
   name: string,
   usedInCompetitions: boolean,
-  isPrincipal: boolean
+  isPrincipal: boolean,
+  predictionSeasons: Array<number>
 }
 
 type DashboardProps = {
@@ -64,7 +65,9 @@ const Dashboard = ({ years, models, metrics }: DashboardProps) => {
   const latestYear = years[years.length - 1];
   const [year, setYear] = useState(latestYear);
 
-  const initialSelectedModels = models.map(item => item.name);
+  const initialSelectedModels = models
+    .filter(model => model.predictionSeasons.includes(year))
+    .map(model => model.name);
   const [checkedModels, setSelectedModels] = useState(initialSelectedModels);
 
   const [currentMetric, setCurrentMetric] = useState(metrics[0]);
@@ -86,6 +89,16 @@ const Dashboard = ({ years, models, metrics }: DashboardProps) => {
   const onChangeMetric = (event: SyntheticEvent<HTMLSelectElement>): void => {
     const checkedMetric = event.currentTarget.value;
     setCurrentMetric(checkedMetric);
+  };
+
+  const onChangeYear = (event: SyntheticEvent<HTMLSelectElement>): void => {
+    const selectedYear = parseInt(event.currentTarget.value, 10);
+    setYear(selectedYear);
+
+    const yearModels = models
+      .filter(model => model.predictionSeasons.includes(selectedYear))
+      .map(model => model.name);
+    setSelectedModels(yearModels);
   };
 
   return (
@@ -140,9 +153,7 @@ const Dashboard = ({ years, models, metrics }: DashboardProps) => {
               label="Choose a year"
               name="year"
               value={year}
-              onChange={(event: SyntheticEvent<HTMLSelectElement>): void => {
-                setYear(parseInt(event.currentTarget.value, 10));
-              }}
+              onChange={onChangeYear}
               options={years}
             />
             <Fieldset legend="Choose a model">

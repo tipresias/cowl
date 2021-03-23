@@ -162,6 +162,18 @@
                 "defaultValue": "false",
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "predictionYear",
+                "description": "Filter ML models such that only ones with predictions for the given season are returned.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -943,6 +955,30 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "PredictionType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "predictionSeasons",
+            "description": "Seasons for which the model has predicted match results.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
                     "ofType": null
                   }
                 }
