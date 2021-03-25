@@ -26,6 +26,8 @@ export const LineChartMainStyled = styled.div`
 
 const colorblindFriendlyPalette = ['#E69F00', '#56B4E9', '#CC79A7', '#009E73', '#0072B2', '#D55E00', '#F0E442'];
 
+const sortByMetric = item => -item.value;
+
 const LineChartMain = ({
   data, models, xAxis, yAxis,
 }: Props): Node => {
@@ -44,7 +46,7 @@ const LineChartMain = ({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={xAxis.dataKey} label={{ value: xAxis.label, offset: -10, position: 'insideBottom' }} />
           <YAxis label={{ value: yAxis.label, angle: -90, position: 'insideBottomLeft' }} />
-          <Tooltip />
+          <Tooltip itemSorter={sortByMetric} />
           <Legend wrapperStyle={{ bottom: -20, fontSize: '1.1rem' }} />
           {!isEmpty(models) && models.map((item, i) => (<Line dataKey={item} type="monotone" stroke={colorblindFriendlyPalette[i]} fill={colorblindFriendlyPalette[i]} key={`model-${item}`} />))}
         </LineChart>
