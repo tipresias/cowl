@@ -11,6 +11,7 @@ jobs:
       DATA_SCIENCE_SERVICE: ${{ secrets.DATA_SCIENCE_SERVICE }}
       DATA_SCIENCE_SERVICE_TOKEN: ${{ secrets.DATA_SCIENCE_SERVICE_TOKEN }}
       DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      FRONTEND_IMAGE: cfranklin11/tipresias_frontend:latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up code coverage monitoring
@@ -26,20 +27,20 @@ jobs:
         with:
           context: ./
           builder: ${{ steps.buildx.outputs.name }}
-          tags: cfranklin11/tipresias_frontend:latest
+          tags: ${{ env.FRONTEND_IMAGE }}
           load: true
       - name: Lint
         if: ${{ always() }}
         run: |
-          docker run --rm cfranklin11/tipresias_frontend:latest yarn run eslint src
+          docker run --rm $FRONTEND_IMAGE yarn run eslint src
       - name: Check types
         if: ${{ always() }}
         run: |
-          docker run --rm cfranklin11/tipresias_frontend:latest yarn run flow
+          docker run --rm $FRONTEND_IMAGE yarn run flow
       - name: Run unit tests
         if: ${{ always() }}
         run: |
-          docker run --rm -e CI=true cfranklin11/tipresias_frontend:latest yarn run test:unit
+          docker run --rm -e CI=true $FRONTEND_IMAGE yarn run test:unit
       - name: GQL integration tests
         id: gql_integration_tests
         if: ${{ always() }}
@@ -74,4 +75,15 @@ jobs:
       - name: Push updated images
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          docker push cfranklin11/tipresias_frontend:latest
+          docker push $FRONTEND_IMAGE
+      - name: Configure AWS credentials
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Upload static files to S3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker-compose -f docker-compose.ci.yml run --rm yarn build
+          aws s3 sync build s3://tipresias-cowl
