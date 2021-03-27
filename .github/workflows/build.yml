@@ -90,7 +90,7 @@ jobs:
           # repository (or a child directory)
           COMMIT_HASH=$(git rev-parse --short HEAD)
 
-          docker-compose run \
+          docker-compose -f docker-compose.ci.yml run \
             --rm \
             -e ROLLBAR_TOKEN=${ROLLBAR_TOKEN} \
             -e COMMIT_HASH=${COMMIT_HASH} \
