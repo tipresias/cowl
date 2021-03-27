@@ -82,6 +82,18 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Upload source maps to Rollbar
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          # Save a short git hash, must be run from a git
+          # repository (or a child directory)
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+
+          docker-compose run \
+            --rm \
+            -e ROLLBAR_TOKEN=${ROLLBAR_TOKEN} \
+            -e COMMIT_HASH=${COMMIT_HASH} \
+            frontend bash ./scripts/upload_source_maps.sh
       - name: Upload static files to S3
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
