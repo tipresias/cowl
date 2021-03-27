@@ -7,7 +7,7 @@ import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
 const defineHost = () => {
-  if (process.env.NODE_ENV === 'production') return 'tipresias.net';
+  if (process.env.NODE_ENV === 'production') return '206.189.38.8';
 
   if (process.env.CI) return 'backend:8000';
 
