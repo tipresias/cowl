@@ -1,5 +1,7 @@
 # cowl
 
+[![build](https://github.com/tipresias/cowl/actions/workflows/build.yml/badge.svg)](https://github.com/tipresias/cowl/actions/workflows/build.yml)
+
 Frontend code for the Tipresias app
 
 ## Running things
