@@ -47,7 +47,3 @@ export DATABASE_NAME="test_${DEFAULT_DATABASE_NAME}"
 # Restarting backend for the new env var to be used
 docker-compose -f ${DOCKER_COMPOSE_FILE} stop backend
 docker-compose -f ${DOCKER_COMPOSE_FILE} up -d backend
-
-./scripts/wait-for-it.sh localhost:3000 -- \
-  docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm \
-    browser_test npx cypress run

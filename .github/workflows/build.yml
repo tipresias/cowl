@@ -85,18 +85,9 @@ jobs:
           aws-region: ap-southeast-2
       - name: Upload source maps to Rollbar
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          # Save a short git hash, must be run from a git
-          # repository (or a child directory)
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-
-          docker-compose -f docker-compose.ci.yml run \
-            --rm \
-            -e ROLLBAR_TOKEN=${ROLLBAR_TOKEN} \
-            -e COMMIT_HASH=${COMMIT_HASH} \
-            frontend bash ./scripts/upload_source_maps.sh
+        run: ./scripts/upload_source_maps.sh
       - name: Upload static files to S3
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          docker-compose -f docker-compose.ci.yml run --rm frontend yarn build
+          yarn build
           aws s3 sync build s3://tipresias.net
