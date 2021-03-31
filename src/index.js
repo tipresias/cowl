@@ -9,8 +9,6 @@ import registerServiceWorker from './registerServiceWorker';
 const defineHost = () => {
   if (process.env.NODE_ENV === 'production') return '206.189.38.8';
 
-  if (process.env.CI) return 'backend:8000';
-
   return 'localhost:8000';
 };
 

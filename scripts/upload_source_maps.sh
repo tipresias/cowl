@@ -2,11 +2,15 @@
 
 set -euo pipefail
 
+# Save a short git hash, must be run from a git
+# repository (or a child directory)
+COMMIT_HASH=$(git rev-parse --short HEAD)
+
 echo "Uploading source maps for version $COMMIT_HASH!"
 
 # We upload a source map for each resulting JavaScript
 # file; the path depends on your build config
-for path in $(find frontend/build/static/js -name "main.*.js"); do
+for path in $(find build/static/js -name "main.*.js"); do
   # URL of the JavaScript file on the web server
   url=http://tipresias.net/${path}
 
