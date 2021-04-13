@@ -11,7 +11,14 @@ jobs:
       DATA_SCIENCE_SERVICE: ${{ secrets.DATA_SCIENCE_SERVICE }}
       DATA_SCIENCE_SERVICE_TOKEN: ${{ secrets.DATA_SCIENCE_SERVICE_TOKEN }}
       DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-      FRONTEND_IMAGE: cfranklin11/tipresias_frontend:latest
+      BACKEND_IMAGE: cfranklin11/tipresias_backend:latest
+    services:
+      db:
+        image: postgres:11.6
+        env:
+          POSTGRES_DB: $DATABASE_NAME
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -19,6 +26,8 @@ jobs:
           node-version: "15"
       - name: Install dependencies
         run: yarn
+      - name: Pull Docker images
+        run: docker pull $BACKEND_IMAGE
       - name: Lint
         if: ${{ always() }}
         run: yarn run eslint src
@@ -31,10 +40,7 @@ jobs:
       - name: GQL integration tests
         id: gql_integration_tests
         if: ${{ always() }}
-        run: |
-          docker-compose -f docker-compose.ci.yml build
-          docker-compose -f docker-compose.ci.yml up --no-start
-          ./scripts/update_frontend_gql_types.sh
+        run: ./scripts/update_frontend_gql_types.sh
       - name: Save updated GQL schema
         uses: actions/upload-artifact@v2
         if: ${{ always() && steps.gql_integration_tests.outcome == 'failure' }}
@@ -46,6 +52,7 @@ jobs:
         run: ./scripts/setup_browser_tests.sh
       - name: Run Cypress tests
         id: cypress
+        if: ${{ always() }}
         uses: cypress-io/github-action@v2
       - name: Save Cypress screenshots
         uses: actions/upload-artifact@v2
