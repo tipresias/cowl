@@ -1,4 +1,5 @@
 // @flow
+import sortBy from 'lodash/sortBy';
 import type {
   fetchLatestRoundPredictions_fetchLatestRoundPredictions_matchPredictions as MatchPredictionType,
 } from '../../graphql/graphql-types/fetchLatestRoundPredictions';
@@ -24,7 +25,7 @@ const determineResultIcon = (isCorrect: ?boolean) => {
 const dataTransformerTable = (
   matchPredictions: MatchPredictionsType,
 ): DataTableType => {
-  const newDataSet = matchPredictions.reduce((acc, {
+  const newDataSet = sortBy(matchPredictions, ['startDateTime']).reduce((acc, {
     startDateTime, predictedWinner, predictedMargin, predictedWinProbability, isCorrect,
   }, currentIndex) => {
     acc[currentIndex] = acc[currentIndex] || [];
