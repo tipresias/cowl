@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import styled from 'styled-components/macro';
+import type { Node } from 'react';
 
 // todo: add a barchart empty animation
 const ChartLoadingStyled = styled.div`

@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import type { Node } from 'react';
 import images from '../../images';
 
 const { logo } = images;

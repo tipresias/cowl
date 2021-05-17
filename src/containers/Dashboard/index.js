@@ -1,8 +1,8 @@
 // @flow
 import React, { Fragment, useState } from 'react';
-import type { Node } from 'react';
 import { Query } from '@apollo/react-components';
 import styled from 'styled-components/macro';
+import type { Node } from 'react';
 import {
   FETCH_SEASON_METRICS_QUERY,
   FETCH_LATEST_ROUND_PREDICTIONS_QUERY,

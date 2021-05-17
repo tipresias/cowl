@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import styled from 'styled-components/macro';
 import {
   LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 import { isEmpty } from 'lodash';
+import type { Node } from 'react';
 
 type Axis = {dataKey?: string, label: string}
 

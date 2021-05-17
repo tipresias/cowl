@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import styled from 'styled-components/macro';
+import type { Node } from 'react';
 import { log } from '../../helpers';
 
 const EmptyStatusStyled = styled.div`
