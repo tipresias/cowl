@@ -29,7 +29,7 @@
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.1",
     "react-scripts": "4.0.3",
-    "recharts": "^2.1.1",
+    "recharts": "^2.1.2",
     "rollbar": "^2.24.0",
     "styled-components": "^4.4.1"
   },
