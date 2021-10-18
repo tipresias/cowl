@@ -42,7 +42,7 @@
     "@babel/preset-react": "^7.14.5",
     "@cypress/code-coverage": "3.9.11",
     "babel-cli": "^6.26.0",
-    "babel-plugin-istanbul": "^6.0.0",
+    "babel-plugin-istanbul": "^6.1.1",
     "customize-cra": "^1.0.0",
     "cypress": "8.5.0",
     "enzyme-to-json": "^3.6.2",
