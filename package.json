@@ -52,7 +52,7 @@
     "eslint-plugin-flowtype": "^6.1.1",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react": "^7.27.1",
     "flow-bin": "^0.133.0",
     "flow-typed": "^3.4.0",
     "istanbul-lib-coverage": "3.2.0",
