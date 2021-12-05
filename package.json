@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-flow": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
-    "@cypress/code-coverage": "3.9.11",
+    "@cypress/code-coverage": "3.9.12",
     "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^6.1.1",
     "customize-cra": "^1.0.0",
