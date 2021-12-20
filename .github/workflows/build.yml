@@ -29,6 +29,11 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           tags: ${{ env.FRONTEND_IMAGE }}
           load: true
+      - name: Check Node version
+        run: |
+          DOCKER_VERSION=$(docker run --rm $FRONTEND_IMAGE node -v)
+          NVM_VERSION=$(cat .nvmrc)
+          [[ $DOCKER_VERSION == $NVM_VERSION ]] && exit 0 || exit 1
       - name: Lint
         if: ${{ always() }}
         run: |
