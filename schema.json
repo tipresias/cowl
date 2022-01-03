@@ -102,7 +102,7 @@
                   "name": "Int",
                   "ofType": null
                 },
-                "defaultValue": "2021",
+                "defaultValue": "2022",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
