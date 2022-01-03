@@ -32,8 +32,10 @@ describe('HomePage', () => {
 
   describe('Main chart widget', () => {
     it('refreshes when year is selected', () => {
-      cy.get('select').select('2019').should('have.value', '2019');
-      cy.get('.WidgetHeading__selected-year').contains('year: 2019').should('be.visible');
+      const thisYear = new Date().getFullYear()
+      const lastYear = String(thisYear - 1)
+      cy.get('select').select(lastYear).should('have.value', lastYear);
+      cy.get('.WidgetHeading__selected-year').contains(`year: ${lastYear}`).should('be.visible');
       cy.get('.recharts-responsive-container').should('be.visible');
     });
 
