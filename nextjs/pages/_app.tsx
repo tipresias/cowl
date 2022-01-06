@@ -1,6 +1,8 @@
 import type { AppProps } from "next/app";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
+import Layout from "../components/Layout";
+
 const defineHost = () => {
   if (process.env.NODE_ENV === "production") return "206.189.38.8";
 
@@ -18,7 +20,9 @@ const client = new ApolloClient({
 function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ApolloProvider>
   );
 }
