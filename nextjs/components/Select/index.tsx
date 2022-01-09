@@ -48,9 +48,9 @@ export const SelectStyled = styled.select`
 
 type Props = {
   name: string;
-  value: number;
+  value: number | string;
   onChange: (event: SyntheticEvent<HTMLSelectElement>) => void;
-  options: Array<number>;
+  options: Array<number | string>;
   id: string;
   label: string;
 };

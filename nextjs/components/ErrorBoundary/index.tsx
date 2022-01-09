@@ -1,37 +1,44 @@
-import React, { useState } from "react";
+import React, { ErrorInfo, useState } from "react";
 
-import { log, isError } from "../../lib/logging";
+import { log } from "../../lib/logging";
 
-type BoundaryError = Error | null;
+interface Props {
+  children: JSX.Element;
+}
 
-const ErrorMessage = ({ error }: { error: Error }) => (
-  <div>
-    <h2>Something went wrong.</h2>
-    <div>
-      {error.message}
-      <br />
-      {error.stack}
-    </div>
-  </div>
-);
-
-const ErrorBoundary = ({ children }: { children: JSX.Element }) => {
-  const [thrownError, setThrownError] = useState<BoundaryError>(null);
-
-  // Normally, just render children
-  try {
-    if (!thrownError) return children;
-  } catch (err) {
-    if (!isError(err)) throw err;
-
-    setThrownError(err);
-    log.error(err);
+class ErrorBoundary extends React.Component<
+  Props,
+  { error: Error | null; errorInfo: ErrorInfo | null }
+> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { error: null, errorInfo: null };
   }
 
-  // Error path
-  if (thrownError) return <ErrorMessage error={thrownError} />;
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.setState({ error, errorInfo });
+    log.error(error);
+  }
 
-  return children;
-};
+  render() {
+    const { errorInfo, error } = this.state;
+    const { children } = this.props;
+    if (errorInfo) {
+      // Error path
+      return (
+        <div>
+          <h2>Something went wrong.</h2>
+          <div>
+            {error && error.toString()}
+            <br />
+            {errorInfo && errorInfo.componentStack}
+          </div>
+        </div>
+      );
+    }
+    // Normally, just render children
+    return children;
+  }
+}
 
 export default ErrorBoundary;

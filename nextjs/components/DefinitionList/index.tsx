@@ -12,7 +12,7 @@ type Definition = {
 };
 
 type Props = {
-  items: Array<Definition>;
+  items?: Array<Definition>;
 };
 
 const DefinitionList = ({ items }: Props) => {
