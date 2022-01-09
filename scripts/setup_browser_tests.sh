@@ -26,4 +26,4 @@ docker-compose -f ${DOCKER_COMPOSE_FILE} stop backend
 docker-compose -f ${DOCKER_COMPOSE_FILE} up -d backend
 ./scripts/wait-for-it.sh localhost:8000 -- echo "Server ready"
 
-yarn start & ./scripts/wait-for-it.sh http://localhost:3000 -- echo "App ready"
+npm run dev & ./scripts/wait-for-it.sh http://localhost:3000 -- echo "App ready"

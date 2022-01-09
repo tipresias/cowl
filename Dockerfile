@@ -8,12 +8,12 @@ FROM node:16.10.0-buster-slim@sha256:9bec98898848c3e3a1346bc74ab04c2072da9d0149d
 WORKDIR /app
 
 # Install dependencies
-COPY package.json yarn.lock ./
-RUN yarn
+COPY package.json package-lock.json ./
+RUN npm install
 
 # Add rest of the client code
 COPY . .
 
 EXPOSE 3000
 
-CMD yarn start
+CMD npm run dev

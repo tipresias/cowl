@@ -1,7 +1,7 @@
 FROM cypress/browsers:node16.5.0-chrome94-ff93
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 # by setting CI environment variable we switch the Cypress install messages
 # to small "started / finished" and avoid 1000s of lines of progress messages

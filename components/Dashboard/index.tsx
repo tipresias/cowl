@@ -76,7 +76,7 @@ const Dashboard = ({ years, models, metrics }: DashboardProps) => {
   const currentMetricLabel = currentMetric.replace(/cumulative/g, "");
   const mainWidgetTitle = `Cumulative ${currentMetricLabel} by round`;
 
-  const onChangeModel = (event: SyntheticEvent<HTMLSelectElement>): void => {
+  const onChangeModel = (event: SyntheticEvent<HTMLInputElement>): void => {
     const checkedModel = event.currentTarget.value;
     if (checkedModels.includes(checkedModel)) {
       const updatedModels = checkedModels.filter(
