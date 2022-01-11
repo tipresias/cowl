@@ -22,7 +22,7 @@ Frontend code for the Tipresias app
 ### Run the app
 
 - Make sure the `tipresias` app is running.
-- Run `yarn start`.
+- Run `yarn run dev`.
 - Navigate to `localhost:3000`.
 
 ### Testing
