@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+
 // eslint-disable-next-line import/prefer-default-export
 
 // TODO: This query is no longer used, but is included in the specs

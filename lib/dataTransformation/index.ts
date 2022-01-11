@@ -51,7 +51,7 @@ export const dataTransformerLineChart = (
   return newDataSet;
 };
 
-const determineResultIcon = (isCorrect: boolean | undefined) => {
+const determineResultIcon = (isCorrect: boolean | null) => {
   if (isCorrect) {
     return { svg: true, text: 'prediction was correct', path: iconCheck.src };
   }

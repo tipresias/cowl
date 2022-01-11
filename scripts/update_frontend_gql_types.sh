@@ -13,13 +13,13 @@ fi
 
 ./scripts/wait-for-it.sh localhost:8000 -- echo "Server ready"
 
-npx apollo client:download-schema \
-  --config=src/apollo.config.js \
+yarn run apollo client:download-schema \
+  --config=apollo.config.js \
   --endpoint=http://localhost:8000/graphql
 
-npx apollo client:codegen graphql-types \
+yarn run apollo client:codegen graphql-types \
   --target=typescript \
-  --includes=src/graphql/index.ts \
+  --includes=graphql/index.ts \
   --tagName=gql \
   --localSchemaFile=schema.json
 
