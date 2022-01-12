@@ -3,7 +3,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 import Layout from "../components/Layout";
 
-const host = process.env.API_HOST || "localhost:8000";
+const host = process.env.NEXT_PUBLIC_API_HOST || "localhost:8000";
 const client = new ApolloClient({
   uri: `http://${host}/graphql`,
   cache: new InMemoryCache({
