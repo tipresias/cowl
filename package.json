@@ -9,7 +9,7 @@
     "test": "jest pages components lib"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.7",
+    "@apollo/client": "^3.5.8",
     "@apollo/react-components": "^4.0.0",
     "apollo": "^2.33.9",
     "d3": "^7.3.0",
