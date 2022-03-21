@@ -12,7 +12,7 @@ export interface fetchLatestRoundPredictions_fetchLatestRoundPredictions_matchPr
   startDateTime: any;
   predictedWinner: string;
   predictedMargin: number;
-  predictedWinProbability: number;
+  predictedWinProbability: number | null;
   isCorrect: boolean | null;
 }
 
