@@ -72,7 +72,7 @@ export const dataTransformerTable = (
     const [date] = startDateTime.split('T');
     const formattedpredictedMargin = (Math.round(predictedMargin * 10) / 10).toString();
     const formattedWinProbability = `
-      ${(Math.round(predictedWinProbability * 1000) / 10).toString()}%
+      ${(Math.round((predictedWinProbability || 0) * 1000) / 10).toString()}%
     `;
     const resultIcon = determineResultIcon(isCorrect);
 
