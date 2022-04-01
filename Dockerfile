@@ -3,7 +3,7 @@
 # their own.
 # Using buster-slim instead of alpine, because there's an open issue
 # about flow not working on alpine, and the response is *shrug*
-FROM node:16.10.0-buster-slim@sha256:9bec98898848c3e3a1346bc74ab04c2072da9d0149d8be1ea0485dbf39fd658f
+FROM node:17.8.0-buster-slim@sha256:3b9ee3741cf3047260d1a8aa530d0c08411367d9fad75e7b31eceb18e9452902
 
 WORKDIR /app
 
